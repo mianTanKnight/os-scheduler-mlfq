@@ -1,0 +1,3 @@
+/home/wenshen/CLionProjects/os-scheduler/cmake-build-debug/CMakeFiles/os_scheduler.dir
+/home/wenshen/CLionProjects/os-scheduler/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/wenshen/CLionProjects/os-scheduler/cmake-build-debug/CMakeFiles/rebuild_cache.dir

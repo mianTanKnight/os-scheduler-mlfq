@@ -1,0 +1,7 @@
+# ninja log v6
+0	16	1729427389239352697	CMakeFiles/os_scheduler.dir/main.c.o	68923a8298bf6923
+1	20	1729427389240352705	CMakeFiles/os_scheduler.dir/task_.c.o	26aeebbe12ec7f9e
+1	22	1729427389240352705	CMakeFiles/os_scheduler.dir/timer.c.o	1f344aa5da61969e
+1	27	1729427389240352705	CMakeFiles/os_scheduler.dir/queue_.c.o	b8f2f84850bef7a0
+0	29	1729427389239352697	CMakeFiles/os_scheduler.dir/mlfq.c.o	5700e0f01c85cf3
+29	41	1729427389268352944	os_scheduler	43e8ddfac895c431
