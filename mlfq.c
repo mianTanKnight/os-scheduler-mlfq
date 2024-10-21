@@ -67,7 +67,9 @@ void mlfq_scheduler_do(MLFQ *mlfq, Timer *timer) {
         Task_ *task = node->data;
         start_time(timer, task);
 
-        if (task->status == WAITING || level == 0) {
+        if (task->status == COMPLETED) {
+            printf("Inof: Task completed of scheduler.\n");
+        }else if (task->status == WAITING || level == 0) {
             printf("Info: Task re_enqueue with id %d, level %d\n", task->t_id, level);
             insert_(mlfq, node); //重新入队
         } else if ((task->status = RUNNING)) {
@@ -75,26 +77,27 @@ void mlfq_scheduler_do(MLFQ *mlfq, Timer *timer) {
             insert_(mlfq, node); //重新入队
             printf("Info: Task Tier Down with id %d, level %d \n", task->t_id, level - 1);
         }
+        break;
     }
 
     //Periodic priority enhancement
-    for (int level = 0; level <= MAX_QUEUE_SIZE - 1; level++) {
-        // =号 排除最高优先级的队列
-        Node_ *lp_node = mlfq->queues[level].front;
-        while (lp_node) {
-            Task_ *lp_task = lp_node->data;
-            if (lp_task && timer->system_time - lp_task->scheduler_sys_time > 5) {
-                remove_(mlfq, lp_node); //先从当前的队列移除
-                up(lp_task);
-                insert_(mlfq, lp_node); //升级
-                printf("Info : PPE TaskId: %d, UpLevel %d,task_exec_systime: %ld ,Timer_systime: %ld \n",
-                       lp_task->t_id, lp_task->queue_level
-                       , timer->system_time, lp_task->scheduler_sys_time);
-                return; //一次之处理一个
-            }
-            lp_node = lp_node->next;
-        }
-    }
+    // for (int level = 0; level <= MAX_QUEUE_SIZE - 1; level++) {
+    //     // =号 排除最高优先级的队列
+    //     Node_ *lp_node = mlfq->queues[level].front;
+    //     while (lp_node) {
+    //         Task_ *lp_task = lp_node->data;
+    //         if (lp_task && timer->system_time - lp_task->scheduler_sys_time > 5) {
+    //             remove_(mlfq, lp_node); //先从当前的队列移除
+    //             up(lp_task);
+    //             insert_(mlfq, lp_node); //升级
+    //             printf("Info : PPE TaskId: %d, UpLevel %d,task_exec_systime: %ld ,Timer_systime: %ld \n",
+    //                    lp_task->t_id, lp_task->queue_level
+    //                    , timer->system_time, lp_task->scheduler_sys_time);
+    //             return; //一次之处理一个
+    //         }
+    //         lp_node = lp_node->next;
+    //     }
+    // }
 }
 
 
