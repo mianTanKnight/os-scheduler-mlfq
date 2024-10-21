@@ -80,24 +80,24 @@ void mlfq_scheduler_do(MLFQ *mlfq, Timer *timer) {
         break;
     }
 
-    //Periodic priority enhancement
-    // for (int level = 0; level <= MAX_QUEUE_SIZE - 1; level++) {
-    //     // =号 排除最高优先级的队列
-    //     Node_ *lp_node = mlfq->queues[level].front;
-    //     while (lp_node) {
-    //         Task_ *lp_task = lp_node->data;
-    //         if (lp_task && timer->system_time - lp_task->scheduler_sys_time > 5) {
-    //             remove_(mlfq, lp_node); //先从当前的队列移除
-    //             up(lp_task);
-    //             insert_(mlfq, lp_node); //升级
-    //             printf("Info : PPE TaskId: %d, UpLevel %d,task_exec_systime: %ld ,Timer_systime: %ld \n",
-    //                    lp_task->t_id, lp_task->queue_level
-    //                    , timer->system_time, lp_task->scheduler_sys_time);
-    //             return; //一次之处理一个
-    //         }
-    //         lp_node = lp_node->next;
-    //     }
-    // }
+     //Periodic priority enhancement
+     for (int level = 0; level <= MAX_QUEUE_SIZE - 1; level++) {
+         // =号 排除最高优先级的队列
+         Node_ *lp_node = mlfq->queues[level].front;
+         while (lp_node) {
+             Task_ *lp_task = lp_node->data;
+             if (lp_task && timer->system_time - lp_task->scheduler_sys_time > 500) {
+                 remove_(mlfq, lp_node); //先从当前的队列移除
+                 up(lp_task);
+                 insert_(mlfq, lp_node); //升级
+                 printf("Info : PPE TaskId: %d, UpLevel %d,task_exec_systime: %ld ,Timer_systime: %ld \n",
+                        lp_task->t_id, lp_task->queue_level
+                        , timer->system_time, lp_task->scheduler_sys_time);
+                 return; //一次之处理一个
+             }
+             lp_node = lp_node->next;
+         }
+     }
 }
 
 
@@ -188,13 +188,13 @@ void test_mlfq() {
         printf("\n=== Scheduling Round %d ===\n", round++);
         mlfq_scheduler(mlfq, &timer);
         // 在调度过程中的随机任务
-        float random_value = (float) rand() / RAND_MAX;
-        if (random_value <= random_ration) {
-            printf("Info: Random_Task -");
-            Task_ *task = create_task(MAX_QUEUE_SIZE - 1, 5, rand(), 0.1f, 0.2f, 0.7f, 50);
-            Node_ *node = create_node(task);
-            register_(mlfq, node);
-        }
+        // float random_value = (float) rand() / RAND_MAX;
+        // if (random_value <= random_ration) {
+        //     printf("Info: Random_Task -");
+        //     Task_ *task = create_task(MAX_QUEUE_SIZE - 1, 5, rand(), 0.1f, 0.2f, 0.7f, 50);
+        //     Node_ *node = create_node(task);
+        //     register_(mlfq, node);
+        // }
     }
     free_mlfq(mlfq);
 }
